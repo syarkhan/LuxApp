@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/activity_main"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:paddingBottom="20dp"
+android:paddingLeft="20dp"
+android:paddingRight="20dp"
+android:paddingTop="50dp"
+tools:context="com.example.sheryarkhan.luxapp.LoginActivity"
+android:background="@android:color/black"
+android:orientation="vertical">
+
+<TextView
+    android:text="Lux App"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:textColor="@android:color/background_light"
+    android:textSize="70px"
+    android:id="@+id/textView" />
+
+
+
+<EditText
+    android:layout_width="332dp"
+    android:layout_height="wrap_content"
+    android:inputType="textPersonName"
+    android:textColor="@android:color/background_light"
+    android:ems="10"
+    android:id="@+id/editTextName"
+    android:hint="Name"
+    android:textColorHint="@color/colorAccent" />
+
+
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:inputType="textPersonName"
+    android:textColor="@android:color/background_light"
+    android:ems="10"
+    android:id="@+id/editTextEmail"
+    android:hint="Email ID"
+    android:textColorLink="?attr/colorPrimary"
+    android:textColorHint="@color/colorAccent" />
+
+<Button
+    android:text="login"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/btnLogin"
+    android:onClick="goToLogin" />
+
+<!--<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:textColor="@android:color/background_light"
+    android:text="or"
+    android:gravity="center"
+    android:ems="10"
+    android:id="@+id/editTextpass2" />
+
+<Button
+    android:text="Register?"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/btnlogin2" />-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="300px"
+    android:gravity="center"
+    tools:context=".LoginActivity"
+    android:orientation="horizontal"
+    >
+    <Button
+        android:text="Register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnregister"
+        android:onClick="GoToRegister" />
+
+    <Button
+        android:text="Forgot Password?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnForgetPassword" />
+</LinearLayout>
+</LinearLayout>
+
