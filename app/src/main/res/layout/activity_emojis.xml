@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/q3bg"
+    tools:context="com.example.sheryarkhan.luxapp.EmojisActivity">
+
+    <Button
+        android:id="@+id/smilebtn"
+        android:layout_width="171dp"
+        android:layout_height="107dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="105dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/transparent_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.962"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/toungbtn"
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="goToFlowers"
+        android:tag="2"
+        app:layout_constraintVertical_bias="0.679" />
+
+    <Button
+        android:id="@+id/toungbtn"
+        android:layout_width="172dp"
+        android:layout_height="106dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/transparent_btn"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="goToFlowers"
+        android:tag="3"
+        app:layout_constraintVertical_bias="0.678" />
+
+    <Button
+        android:id="@+id/lolbtn"
+        android:layout_width="172dp"
+        android:layout_height="102dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/transparent_btn"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.023"
+        app:layout_constraintLeft_toRightOf="@+id/toungbtn"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="goToFlowers"
+        android:tag="1"
+        app:layout_constraintVertical_bias="0.674" />
+</android.support.constraint.ConstraintLayout>
+

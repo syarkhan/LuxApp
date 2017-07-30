@@ -2,37 +2,90 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sheryarkhan.luxapp">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
-
+    <!-- <uses-feature -->
+    <!-- android:name="android.hardware.camera" -->
+    <!-- android:required="true" /> -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="landscape">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ConsentActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".SampleActivity"
+            android:label="@string/title_activity_sample"
+            android:screenOrientation="landscape">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".DiscoverActivity"
+            android:screenOrientation="landscape">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".ColorsActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".EmojisActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".FlowersActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".TakeSelfieActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".PlacesActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".splashScreen"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ConsentActivity" />
         <activity
-            android:name=".SampleActivity"
-            android:label="@string/title_activity_sample"
-            android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
+            android:name=".PreviewActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".PermissionActivity"
+            android:screenOrientation="landscape"
+            ></activity>
     </application>
+
 </manifest>

@@ -13,6 +13,8 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText editTxtName,editTxtEmail;
     Button btnLogin;
+
+    public static User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +23,9 @@ public class LoginActivity extends AppCompatActivity {
 
         editTxtName = (EditText)findViewById(R.id.editTextName);
         editTxtEmail = (EditText)findViewById(R.id.editTextEmail);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
+
+
+        //btnLogin = (Button) findViewById(R.id.btnLogin);
 
     }
 
@@ -34,11 +38,28 @@ public class LoginActivity extends AppCompatActivity {
         }
         else
         {
-                    //Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getBaseContext(),MainActivity.class);
+                    boolean validEmail = isValidEmail(editTxtEmail.getText().toString());
 
-                    startActivity(intent);
+                    if(validEmail) {
 
+                        user = new User(editTxtName.getText().toString(), editTxtEmail.getText().toString());
+                        //Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getBaseContext(), DiscoverActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }else
+                    {
+                        Toast.makeText(getBaseContext(),"Please enter correct Email ID!",Toast.LENGTH_SHORT).show();
+                    }
+
+        }
+    }
+
+    public final static boolean isValidEmail(CharSequence target) {
+        if (target == null) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
         }
     }
 }

@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("dir", "Directory not created");
         }
 
-        File image_file = new File(folder,"selfie_cam"+curentTime+".jpg");
+        File image_file = new File(folder,"selfie_cam_"+curentTime+".jpg");
         return image_file;
     }
 
@@ -139,6 +139,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public Bitmap getBitmapOfSnappedImage(){
+
+
+        try {
+            String root = Environment.getExternalStorageDirectory().toString();
+            String path = root + "/Lux" + "/selfie_cam_" + curentTime + ".jpg";
+
+            File image = new File(path);
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
+
+            return bitmap;
+        }catch(Exception ex)
+        {
+            Log.d("dada3",ex.toString());
+        }
+        return null;
+    }
+
 
     public void setAndSaveImageWithOverlay(Bitmap snappedImage){
         Bitmap b = Bitmap.createBitmap(snappedImage.getWidth(), snappedImage.getHeight(), Bitmap.Config.ARGB_8888);
@@ -161,15 +180,5 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public Bitmap getBitmapOfSnappedImage(){
 
-
-        String root = Environment.getExternalStorageDirectory().toString();
-        String path = root + "/Lux"+     "/selfie_cam_"+curentTime+".jpg";
-
-        File image = new File(path);
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        Bitmap bitmap =     BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
-        return bitmap;
-    }
 }
