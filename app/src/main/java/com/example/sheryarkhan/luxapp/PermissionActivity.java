@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.Image;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.aware.DiscoverySession;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -16,16 +18,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -53,6 +60,8 @@ public class PermissionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permission);
 
@@ -86,8 +95,8 @@ public class PermissionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                progressBar.setVisibility(View.VISIBLE);
-                btnConfrim.setClickable(false);
+
+
 
 
                 File storagePath = null;
@@ -118,19 +127,33 @@ public class PermissionActivity extends AppCompatActivity {
 
 
                 try {
-                    String[] myTaskParams = {"Testing", "Testing", "consent750@gmail.com", LoginActivity.user.getEmail()};
+                    String[] myTaskParams = {"Lux Selfie", "Lux", "consent750@gmail.com", LoginActivity.user.getEmail()};
 
                     //GMailSender sender = new GMailSender("szabistdemo@gmail.com", "demoforszabist");
 
-                    GMailSender sender = new GMailSender("consent750@gmail.com", "ailaan123");
 
-                    addAttachment(myImage.toString());
 
                     SaveImageTask saveImageTask = new SaveImageTask();
                     saveImageTask.execute(SampleActivity.newImage,myImage);
 
-                    RetrieveReadTask task = new RetrieveReadTask(PermissionActivity.this);
-                    task.execute(myTaskParams);
+                    ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+                    if (mWifi.isConnected()) {
+                        // Do whatever
+                        progressBar.setVisibility(View.VISIBLE);
+                        btnConfrim.setClickable(false);
+                        GMailSender sender = new GMailSender("consent750@gmail.com", "ailaan123");
+
+                        addAttachment(myImage.toString());
+
+                        RetrieveReadTask task = new RetrieveReadTask(PermissionActivity.this);
+                        task.execute(myTaskParams);
+                    }else {
+                        Toast.makeText(getBaseContext(),"Wifi is not connected!",Toast.LENGTH_SHORT).show();
+                    }
+
+
 
 //                    sender.sendMail("This is Subject",
 //                            "This is Body anmsdbasdbakjdbkjasbdbas",
@@ -140,7 +163,8 @@ public class PermissionActivity extends AppCompatActivity {
 //                    Toast.makeText(getBaseContext(),"WIFI disabled, please turn on WIFI!",Toast.LENGTH_SHORT).show();
 //
                 } catch (Exception ex) {
-                    Log.d("SendMail", ex.getMessage(), ex);
+                    Toast.makeText(getBaseContext(),"Network Error!",Toast.LENGTH_SHORT).show();
+                    //Log.d("SendMail", ex.getMessage(), ex);
                 }
 
                 //Toast.makeText(getBaseContext(),String.valueOf(radio),Toast.LENGTH_SHORT).show();
@@ -157,11 +181,52 @@ public class PermissionActivity extends AppCompatActivity {
         DataSource source = new FileDataSource(filename);
 
         messageBodyPart.setDataHandler(new DataHandler(source));
-
-        messageBodyPart.setFileName("Lux Selfie");
+//        messageBodyPart.setDisposition(MimeBodyPart.ATTACHMENT);
+//        messageBodyPart.setHeader("Content-ID", "<image>");
+//        DataSource ds = new ByteArrayDataSource(image, "image/jpeg");
+        messageBodyPart.setFileName("Lux Selfie.jpg");
 
         _multipart.addBodyPart(messageBodyPart);
 
+    }
+
+    public class ByteArrayDataSource implements DataSource {
+        private byte[] data;
+        private String type;
+
+        public ByteArrayDataSource(byte[] data, String type) {
+            super();
+            this.data = data;
+            this.type = type;
+        }
+
+        public ByteArrayDataSource(byte[] data) {
+            super();
+            this.data = data;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getContentType() {
+            if (type == null)
+                return "application/octet-stream";
+            else
+                return type;
+        }
+
+        public InputStream getInputStream() throws IOException {
+            return new ByteArrayInputStream(data);
+        }
+
+        public String getName() {
+            return "ByteArrayDataSource";
+        }
+
+        public OutputStream getOutputStream() throws IOException {
+            throw new IOException("Not Supported");
+        }
     }
 
     private class SaveImageTask extends AsyncTask<Object, Void, Void> {
@@ -241,7 +306,12 @@ public class PermissionActivity extends AppCompatActivity {
                 message.setContent(_multipart);
                 //message.setDataHandler(handler);
                 if (params[3].indexOf(',') > 0)
+                {
+
                     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(params[3]));
+                    //message.addRecipient(Message.RecipientType.TO, InternetAddress.parse("consent750@gmail.com")); //Consent Email
+
+                }
                     //message.addRecipient(Message.RecipientType.CC, InternetAddress);
                 else
                     if(radio)
@@ -270,11 +340,14 @@ public class PermissionActivity extends AppCompatActivity {
 
 
             progressBar.setVisibility(View.GONE);
-            Snackbar snackbar = Snackbar.make(parentLayout,"Selfie emailed!",Snackbar.LENGTH_LONG);
-            View view = snackbar.getView();
-            TextView tv = (TextView)view.findViewById(android.support.design.R.id.snackbar_text);
-            tv.setTextColor(Color.RED);
-            snackbar.show();
+//            Snackbar snackbar = Snackbar.make(parentLayout,"Selfie emailed!",Snackbar.LENGTH_LONG);
+//            View view = snackbar.getView();
+//            TextView tv = (TextView)view.findViewById(android.support.design.R.id.snackbar_text);
+//            tv.setTextColor(Color.RED);
+//            snackbar.show();
+
+
+            Toast.makeText(context,"Selfie emailed!",Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(context,splashScreen.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

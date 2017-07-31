@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -56,6 +57,7 @@ public class SampleActivity extends Activity implements SurfaceHolder.Callback
 
     private Button btnCapture = null;
     private ImageView overlayImage;
+    private FrameLayout frameLayout;
 
 
 
@@ -77,6 +79,7 @@ public class SampleActivity extends Activity implements SurfaceHolder.Callback
         setContentView(R.layout.activity_sample);
 
         overlayImage = (ImageView)findViewById(R.id.imageView1);
+        frameLayout = (FrameLayout)findViewById(R.id.frameLayout);
 
         if(TakeSelfieActivity.maxIndex == 1)
         {
@@ -128,18 +131,30 @@ public class SampleActivity extends Activity implements SurfaceHolder.Callback
 
 
 
-        btnCapture = (Button)findViewById(R.id.button1);
-        btnCapture.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                // TODO Auto-generated method stub
-                camera.takePicture(cameraShutterCallback,
-                        cameraPictureCallbackRaw,
-                        cameraPictureCallbackJpeg);
-            }
-        });
+            frameLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    // TODO Auto-generated method stub
+                    camera.takePicture(cameraShutterCallback,
+                            cameraPictureCallbackRaw,
+                            cameraPictureCallbackJpeg);
+
+                }
+            });
+
+//        btnCapture = (Button)findViewById(R.id.button1);
+//        btnCapture.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                // TODO Auto-generated method stub
+//                camera.takePicture(cameraShutterCallback,
+//                        cameraPictureCallbackRaw,
+//                        cameraPictureCallbackJpeg);
+//            }
+//        });
 
         }catch (Exception ex)
         {
@@ -305,7 +320,7 @@ public class SampleActivity extends Activity implements SurfaceHolder.Callback
 //                Drawable drawable = getResources().getDrawable
 //                        (R.drawable.mahira_selfie_frame);
 
-                drawable.setBounds(0, 0, getWindowManager().getDefaultDisplay().getWidth(), getWindowManager().getDefaultDisplay().getHeight());
+                //drawable.setBounds(0, 0, getWindowManager().getDefaultDisplay().getWidth(), getWindowManager().getDefaultDisplay().getHeight());
 
                 //drawable.setBounds(0, 0, drawable.getIntrinsicWidth()+20, drawable.getIntrinsicHeight()+30);
                 //drawable.draw(canvas);
@@ -398,9 +413,12 @@ public class SampleActivity extends Activity implements SurfaceHolder.Callback
         }
         try
         {
-            Camera.Parameters parameters = camera.getParameters();
-            List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
 
+
+            Camera.Parameters parameters = camera.getParameters();
+
+            List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
+            //getOptimalPreviewSize(previewSizes);
             for (Camera.Size size : previewSizes) {
                 // 640 480
                 // 960 720
@@ -413,10 +431,14 @@ public class SampleActivity extends Activity implements SurfaceHolder.Callback
                 // 3264 1836
                 // 2048 1152
                 // 3264 2176
-                if (800 == size.width) {
+                if (1280 == size.width) {
                     parameters.setPreviewSize(size.width, size.height);
                     parameters.setPictureSize(size.width, size.height);
                     break;
+                }
+                else{
+                    parameters.setPreviewSize(1280, 800);
+                    parameters.setPictureSize(1280, 800);
                 }
             }
 
@@ -456,6 +478,40 @@ public class SampleActivity extends Activity implements SurfaceHolder.Callback
             e.printStackTrace();
             Log.d("dada7",e.toString());
         }
+    }
+
+
+
+    private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
+        final double ASPECT_TOLERANCE = 0.1;
+        double targetRatio=(double)h / w;
+
+        if (sizes == null) return null;
+
+        Camera.Size optimalSize = null;
+        double minDiff = Double.MAX_VALUE;
+
+        int targetHeight = h;
+
+        for (Camera.Size size : sizes) {
+            double ratio = (double) size.width / size.height;
+            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
+            if (Math.abs(size.height - targetHeight) < minDiff) {
+                optimalSize = size;
+                minDiff = Math.abs(size.height - targetHeight);
+            }
+        }
+
+        if (optimalSize == null) {
+            minDiff = Double.MAX_VALUE;
+            for (Camera.Size size : sizes) {
+                if (Math.abs(size.height - targetHeight) < minDiff) {
+                    optimalSize = size;
+                    minDiff = Math.abs(size.height - targetHeight);
+                }
+            }
+        }
+        return optimalSize;
     }
 
     @Override

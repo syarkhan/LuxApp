@@ -9,6 +9,8 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 public class PreviewActivity extends AppCompatActivity {
@@ -17,14 +19,19 @@ public class PreviewActivity extends AppCompatActivity {
     ImageView previewImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview);
 
         //layout = (ConstraintLayout)findViewById(R.id.previewLayout);
         previewImage = (ImageView)findViewById(R.id.previewImage);
+        SampleActivity.drawable.setBounds(0, 0, 1280,800);
         SampleActivity.drawable.draw(SampleActivity.canvas);
 
         Drawable draw = new BitmapDrawable(getResources(),SampleActivity.newImage);
+
+
 
         //layout.setBackground(draw);
         previewImage.setBackground(draw);

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ public class ColorsActivity extends AppCompatActivity {
     public static QuestionsList questionsList = new QuestionsList();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_colors);
     }
@@ -35,8 +39,8 @@ public class ColorsActivity extends AppCompatActivity {
             arrayList.add(3);
             questionsList.setqList(arrayList);
         }
-        String text= questionsList.getqList().toString();
-        Toast.makeText(getBaseContext(),text,Toast.LENGTH_SHORT).show();
+        //String text= questionsList.getqList().toString();
+        //Toast.makeText(getBaseContext(),text,Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getBaseContext(),PlacesActivity.class);
         startActivity(intent);
         finish();

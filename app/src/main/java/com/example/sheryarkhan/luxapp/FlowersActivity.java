@@ -4,12 +4,16 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 public class FlowersActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flowers);
     }
@@ -25,8 +29,8 @@ public class FlowersActivity extends AppCompatActivity {
         else if(view.getTag().toString().equals("3")) {
             ColorsActivity.questionsList.qList.add(3);
         }
-        String text= ColorsActivity.questionsList.getqList().toString();
-        Toast.makeText(getBaseContext(),text,Toast.LENGTH_SHORT).show();
+        //String text= ColorsActivity.questionsList.getqList().toString();
+        //Toast.makeText(getBaseContext(),text,Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getBaseContext(),TakeSelfieActivity.class);
         startActivity(intent);
         finish();

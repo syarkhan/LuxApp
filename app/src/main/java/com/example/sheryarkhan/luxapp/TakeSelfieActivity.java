@@ -6,6 +6,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.util.Comparator;
@@ -25,6 +27,8 @@ public class TakeSelfieActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_selfie);
 
@@ -45,7 +49,7 @@ public class TakeSelfieActivity extends AppCompatActivity {
             }
         }
 
-        Toast.makeText(getBaseContext(),String.valueOf(maxIndex),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(),String.valueOf(maxIndex),Toast.LENGTH_SHORT).show();
 
         constraintLayout = (ConstraintLayout)findViewById(R.id.takeSelfieLayout);
 
