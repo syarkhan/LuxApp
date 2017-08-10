@@ -10,19 +10,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
-import android.graphics.PixelFormat;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -35,219 +28,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
 
 public class SampleActivity extends Activity implements SurfaceHolder.Callback
 {
-    private Camera camera = null;
-    private SurfaceView cameraSurfaceView = null;
-    private SurfaceHolder cameraSurfaceHolder = null;
-    private boolean previewing = false;
-    RelativeLayout relativeLayout;
     public static Drawable drawable = null;
     public static Canvas canvas = null;
     public static Bitmap newImage = null;
-
-    private int cameraId;
-
-    private Button btnCapture = null;
-    private ImageView overlayImage;
-    private FrameLayout frameLayout;
-
-
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        // TODO Auto-generated method stub
-        super.onCreate(savedInstanceState);
-
-
-
-        getWindow().setFormat(PixelFormat.TRANSLUCENT);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        setContentView(R.layout.activity_sample);
-
-        overlayImage = (ImageView)findViewById(R.id.imageView1);
-        frameLayout = (FrameLayout)findViewById(R.id.frameLayout);
-
-        if(TakeSelfieActivity.maxIndex == 1)
-        {
-            overlayImage.setImageResource(R.drawable.mahira_selfie_frame);
-        }
-        else if(TakeSelfieActivity.maxIndex == 2)
-        {
-            overlayImage.setImageResource(R.drawable.mawra_selfie_frame);
-        }
-        else if(TakeSelfieActivity.maxIndex == 3)
-        {
-            overlayImage.setImageResource(R.drawable.maya_selfie_frame);
-        }
-
-        try {
-            int PERMISSIONS_ALL = 1;
-            String[] Permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-            if (!hasPermissions(this, Permissions)) {
-                ActivityCompat.requestPermissions(this, Permissions, PERMISSIONS_ALL);
-            }
-        }catch(Exception ex)
-        {
-            Log.d("permissionError",ex.toString());
-        }
-//
-//        ActivityCompat.requestPermissions(SampleActivity.this,
-//                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA},
-//                new Integer[]{1,2});
-
-//        ActivityCompat.requestPermissions(SampleActivity.this,
-//                new String[]{Manifest.permission.CAMERA},
-//                1);
-
-
-
-
-        try
-        {
-        relativeLayout=(RelativeLayout) findViewById(R.id.containerImg);
-        relativeLayout.setDrawingCacheEnabled(true);
-        cameraSurfaceView = (SurfaceView) findViewById(R.id.surfaceView1);
-        //  cameraSurfaceView.setLayoutParams(new FrameLayout.LayoutParams(640, 480));
-        cameraSurfaceHolder = cameraSurfaceView.getHolder();
-        cameraSurfaceHolder.addCallback(this);
-        //    cameraSurfaceHolder.setType(SurfaceHolder.
-        //                                               SURFACE_TYPE_PUSH_BUFFERS);
-
-            cameraId = getFrontCameraId();
-
-
-
-            frameLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    // TODO Auto-generated method stub
-                    camera.takePicture(cameraShutterCallback,
-                            cameraPictureCallbackRaw,
-                            cameraPictureCallbackJpeg);
-
-                }
-            });
-
-//        btnCapture = (Button)findViewById(R.id.button1);
-//        btnCapture.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                // TODO Auto-generated method stub
-//                camera.takePicture(cameraShutterCallback,
-//                        cameraPictureCallbackRaw,
-//                        cameraPictureCallbackJpeg);
-//            }
-//        });
-
-        }catch (Exception ex)
-        {
-            Log.d("dada",ex.toString());
-        }
-    }
-
-
-    public static boolean hasPermissions(Context context,String... permissions){
-
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
-                for (String permission : permissions) {
-                    if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                        return false;
-                    }
-                }
-            }
-        }catch(Exception ex)
-        {
-            Log.d("dadabhoy",ex.toString());
-        }
-
-        return true;
-    }
-
-//    private void checkAndroidVersion() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            checkPermission();
-//
-//        } else {
-//            // write your logic here
-//        }
-//
-//    }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode,
-//                                           String permissions[], int[] grantResults) {
-//        switch (requestCode) {
-//            case 1: {
-//
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length > 0
-//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//                    // permission was granted, yay! Do the
-//                    // contacts-related task you need to do.
-//                } else {
-//
-//                    // permission denied, boo! Disable the
-//                    // functionality that depends on this permission.
-//                    Toast.makeText(SampleActivity.this, "Permission denied!", Toast.LENGTH_SHORT).show();
-//                }
-//                return;
-//            }
-//            case 2: {
-//
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length > 0
-//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//                    // permission was granted, yay! Do the
-//                    // contacts-related task you need to do.
-//                } else {
-//
-//                    // permission denied, boo! Disable the
-//                    // functionality that depends on this permission.
-//                    Toast.makeText(SampleActivity.this, "Permission denied!", Toast.LENGTH_SHORT).show();
-//                }
-//                return;
-//            }
-////
-////             other 'case' lines to check for other
-////             permissions this app might request
-//        }
-//    }
-
-    private int getFrontCameraId(){
-        int camId = -1;
-        int numberOfCameras = Camera.getNumberOfCameras();
-        Camera.CameraInfo ci = new Camera.CameraInfo();
-
-        for(int i = 0;i < numberOfCameras;i++){
-            Camera.getCameraInfo(i,ci);
-            if(ci.facing == Camera.CameraInfo.CAMERA_FACING_FRONT){
-                camId = i;
-            }
-        }
-
-        return camId;
-    }
-
+    RelativeLayout relativeLayout;
     Camera.ShutterCallback cameraShutterCallback = new Camera.ShutterCallback()
     {
         @Override
@@ -256,7 +46,6 @@ public class SampleActivity extends Activity implements SurfaceHolder.Callback
             // TODO Auto-generated method stub
         }
     };
-
     Camera.PictureCallback cameraPictureCallbackRaw = new Camera.PictureCallback()
     {
         @Override
@@ -265,7 +54,6 @@ public class SampleActivity extends Activity implements SurfaceHolder.Callback
             // TODO Auto-generated method stub
         }
     };
-
     Camera.PictureCallback cameraPictureCallbackJpeg = new Camera.PictureCallback()
     {
         @Override
@@ -376,6 +164,185 @@ public class SampleActivity extends Activity implements SurfaceHolder.Callback
 
         }
     };
+    private Camera camera = null;
+    private SurfaceView cameraSurfaceView = null;
+    private SurfaceHolder cameraSurfaceHolder = null;
+    private boolean previewing = false;
+    private int cameraId;
+    private Button btnCapture = null;
+    private ImageView overlayImage;
+
+//    private void checkAndroidVersion() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            checkPermission();
+//
+//        } else {
+//            // write your logic here
+//        }
+//
+//    }
+
+    //    @Override
+//    public void onRequestPermissionsResult(int requestCode,
+//                                           String permissions[], int[] grantResults) {
+//        switch (requestCode) {
+//            case 1: {
+//
+//                // If request is cancelled, the result arrays are empty.
+//                if (grantResults.length > 0
+//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//                    // permission was granted, yay! Do the
+//                    // contacts-related task you need to do.
+//                } else {
+//
+//                    // permission denied, boo! Disable the
+//                    // functionality that depends on this permission.
+//                    Toast.makeText(SampleActivity.this, "Permission denied!", Toast.LENGTH_SHORT).show();
+//                }
+//                return;
+//            }
+//            case 2: {
+//
+//                // If request is cancelled, the result arrays are empty.
+//                if (grantResults.length > 0
+//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//                    // permission was granted, yay! Do the
+//                    // contacts-related task you need to do.
+//                } else {
+//
+//                    // permission denied, boo! Disable the
+//                    // functionality that depends on this permission.
+//                    Toast.makeText(SampleActivity.this, "Permission denied!", Toast.LENGTH_SHORT).show();
+//                }
+//                return;
+//            }
+////
+////             other 'case' lines to check for other
+////             permissions this app might request
+//        }
+//    }
+    private FrameLayout frameLayout;
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+                for (String permission : permissions) {
+                    if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                        return false;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Log.d("dadabhoy", ex.toString());
+        }
+
+        return true;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreate(savedInstanceState);
+
+
+        getWindow().setFormat(PixelFormat.TRANSLUCENT);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        setContentView(R.layout.activity_sample);
+
+        overlayImage = findViewById(R.id.imageView1);
+        frameLayout = findViewById(R.id.frameLayout);
+
+        if (TakeSelfieActivity.maxIndex == 1) {
+            overlayImage.setImageResource(R.drawable.mahira_selfie_frame);
+        } else if (TakeSelfieActivity.maxIndex == 2) {
+            overlayImage.setImageResource(R.drawable.mawra_selfie_frame);
+        } else if (TakeSelfieActivity.maxIndex == 3) {
+            overlayImage.setImageResource(R.drawable.maya_selfie_frame);
+        }
+
+        try {
+            int PERMISSIONS_ALL = 1;
+            String[] Permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+            if (!hasPermissions(this, Permissions)) {
+                ActivityCompat.requestPermissions(this, Permissions, PERMISSIONS_ALL);
+            }
+        } catch (Exception ex) {
+            Log.d("permissionError", ex.toString());
+        }
+//
+//        ActivityCompat.requestPermissions(SampleActivity.this,
+//                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA},
+//                new Integer[]{1,2});
+
+//        ActivityCompat.requestPermissions(SampleActivity.this,
+//                new String[]{Manifest.permission.CAMERA},
+//                1);
+
+
+        try {
+            relativeLayout = findViewById(R.id.containerImg);
+            relativeLayout.setDrawingCacheEnabled(true);
+            cameraSurfaceView = findViewById(R.id.surfaceView1);
+            //  cameraSurfaceView.setLayoutParams(new FrameLayout.LayoutParams(640, 480));
+            cameraSurfaceHolder = cameraSurfaceView.getHolder();
+            cameraSurfaceHolder.addCallback(this);
+            //    cameraSurfaceHolder.setType(SurfaceHolder.
+            //                                               SURFACE_TYPE_PUSH_BUFFERS);
+
+            cameraId = getFrontCameraId();
+
+
+            frameLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    // TODO Auto-generated method stub
+                    camera.takePicture(cameraShutterCallback,
+                            cameraPictureCallbackRaw,
+                            cameraPictureCallbackJpeg);
+
+                }
+            });
+
+//        btnCapture = (Button)findViewById(R.id.button1);
+//        btnCapture.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                // TODO Auto-generated method stub
+//                camera.takePicture(cameraShutterCallback,
+//                        cameraPictureCallbackRaw,
+//                        cameraPictureCallbackJpeg);
+//            }
+//        });
+
+        } catch (Exception ex) {
+            Log.d("dada", ex.toString());
+        }
+    }
+
+    private int getFrontCameraId() {
+        int camId = -1;
+        int numberOfCameras = Camera.getNumberOfCameras();
+        Camera.CameraInfo ci = new Camera.CameraInfo();
+
+        for (int i = 0; i < numberOfCameras; i++) {
+            Camera.getCameraInfo(i, ci);
+            if (ci.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                camId = i;
+            }
+        }
+
+        return camId;
+    }
 
     private Bitmap rotateBitmap(Bitmap bitmap)
     {
@@ -431,15 +398,15 @@ public class SampleActivity extends Activity implements SurfaceHolder.Callback
                 // 3264 1836
                 // 2048 1152
                 // 3264 2176
-                if (1280 == size.width) {
+                if (2048 == size.width && 1536 == size.height) {
                     parameters.setPreviewSize(size.width, size.height);
                     parameters.setPictureSize(size.width, size.height);
                     break;
                 }
-                else{
-                    parameters.setPreviewSize(1280, 800);
-                    parameters.setPictureSize(1280, 800);
-                }
+//                else{
+//                    parameters.setPreviewSize(1280, 800);
+//                    parameters.setPictureSize(1280, 800);
+//                }
             }
 
             //Camera.Size previewSize = previewSizes.get(0);

@@ -3,11 +3,8 @@ package com.example.sheryarkhan.luxapp;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.provider.ContactsContract;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,7 +23,7 @@ public class PreviewActivity extends AppCompatActivity {
 
         //layout = (ConstraintLayout)findViewById(R.id.previewLayout);
         previewImage = (ImageView)findViewById(R.id.previewImage);
-        SampleActivity.drawable.setBounds(0, 0, 1280,960);
+        SampleActivity.drawable.setBounds(0, 0, 2048, 1536);
         SampleActivity.drawable.draw(SampleActivity.canvas);
 
         Drawable draw = new BitmapDrawable(getResources(),SampleActivity.newImage);
