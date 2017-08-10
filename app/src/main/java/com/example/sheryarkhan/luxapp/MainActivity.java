@@ -92,10 +92,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void dispatchTakePictureIntent(View view) {
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-//            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//        }
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
 
 
 
@@ -112,19 +112,19 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-                //Bundle bundle = new Bundle();
-//            Bundle extras = data.getExtras();
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            //imgView.setImageBitmap(imageBitmap);
-//            finalBitmapImage = imageBitmap;
-//
-//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//            imageBitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
-//            byte[] image = stream.toByteArray();
-//
-//            Intent intent = new Intent(this, ConsentActivity.class);
-//            intent.putExtra("photo", image);
-//            startActivity(intent);
+                Bundle bundle = new Bundle();
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //imgView.setImageBitmap(imageBitmap);
+            finalBitmapImage = imageBitmap;
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
+            byte[] image = stream.toByteArray();
+
+            Intent intent = new Intent(this, ConsentActivity.class);
+            intent.putExtra("photo", image);
+            startActivity(intent);
                 //Intent intent = new Intent(getBaseContext(),ConsentActivity.class);
                 //startActivity(intent);
 

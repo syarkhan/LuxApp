@@ -23,7 +23,7 @@ public class PreviewActivity extends AppCompatActivity {
 
         //layout = (ConstraintLayout)findViewById(R.id.previewLayout);
         previewImage = (ImageView)findViewById(R.id.previewImage);
-        SampleActivity.drawable.setBounds(0, 0, 2048, 1536);
+        SampleActivity.drawable.setBounds(0, 0, SampleActivity.w, SampleActivity.h);
         SampleActivity.drawable.draw(SampleActivity.canvas);
 
         Drawable draw = new BitmapDrawable(getResources(),SampleActivity.newImage);

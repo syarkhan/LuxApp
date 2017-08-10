@@ -37,6 +37,9 @@ public class SampleActivity extends Activity implements SurfaceHolder.Callback
     public static Drawable drawable = null;
     public static Canvas canvas = null;
     public static Bitmap newImage = null;
+    public static int w;
+    public static int h;
+
     RelativeLayout relativeLayout;
     Camera.ShutterCallback cameraShutterCallback = new Camera.ShutterCallback()
     {
@@ -386,28 +389,33 @@ public class SampleActivity extends Activity implements SurfaceHolder.Callback
 
             List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
             //getOptimalPreviewSize(previewSizes);
-            for (Camera.Size size : previewSizes) {
-                // 640 480
-                // 960 720
-                // 1024 768
-                // 1280 720
-                // 1600 1200
-                // 2560 1920
-                // 3264 2448
-                // 2048 1536
-                // 3264 1836
-                // 2048 1152
-                // 3264 2176
-                if (2048 == size.width && 1536 == size.height) {
-                    parameters.setPreviewSize(size.width, size.height);
-                    parameters.setPictureSize(size.width, size.height);
-                    break;
-                }
-//                else{
-//                    parameters.setPreviewSize(1280, 800);
-//                    parameters.setPictureSize(1280, 800);
+
+            w = previewSizes.get(0).width;
+            h = previewSizes.get(0).height;
+            parameters.setPreviewSize(previewSizes.get(0).width,previewSizes.get(0).height);
+            parameters.setPictureSize(previewSizes.get(0).width,previewSizes.get(0).height);
+//            for (Camera.Size size : previewSizes) {
+//                // 640 480
+//                // 960 720
+//                // 1024 768
+//                // 1280 720
+//                // 1600 1200
+//                // 2560 1920
+//                // 3264 2448
+//                // 2048 1536
+//                // 3264 1836
+//                // 2048 1152
+//                // 3264 2176
+//                if (2048 == size.width && 1536 == size.height) {
+//                    parameters.setPreviewSize(size.width, size.height);
+//                    parameters.setPictureSize(size.width, size.height);
+//                    break;
 //                }
-            }
+////                else{
+////                    parameters.setPreviewSize(1280, 800);
+////                    parameters.setPictureSize(1280, 800);
+////                }
+//            }
 
             //Camera.Size previewSize = previewSizes.get(0);
             //parameters.setPreviewSize(previewSize.width, previewSize.height);
