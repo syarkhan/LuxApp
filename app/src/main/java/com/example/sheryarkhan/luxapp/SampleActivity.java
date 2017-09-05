@@ -409,6 +409,7 @@ public class SampleActivity extends Activity implements SurfaceHolder.Callback
 //                if (2048 == size.width && 1536 == size.height) {
 //                    parameters.setPreviewSize(size.width, size.height);
 //                    parameters.setPictureSize(size.width, size.height);
+//                    parameters.setPictureSize(size.width, size.height);
 //                    break;
 //                }
 ////                else{
